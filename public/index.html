@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#030914" />
+  <title>World Champions Draft</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <section id="screenSetup" class="screen screen-setup is-active" aria-labelledby="setupTitle">
+      <header class="title-center">
+        <p class="micro-label">MODE SOLO</p>
+        <h1 id="setupTitle">WORLD CHAMPIONS</h1>
+        <span class="star" aria-hidden="true">★</span>
+      </header>
+
+      <section class="setup-card compact-card">
+        <div class="setup-heading">
+          <span class="heading-icon" aria-hidden="true">👥</span>
+          <div>
+            <h2>UKURAN TIM</h2>
+            <p>Mode classic - 11 pemain.</p>
+          </div>
+        </div>
+
+        <button class="choice-card single-choice is-selected" type="button" aria-pressed="true">
+          <span class="check-badge">✓</span>
+          <span class="choice-orb">11</span>
+          <strong>CLASSIC MODE</strong>
+          <small>Timnas untuk simulasi turnamen.</small>
+        </button>
+      </section>
+
+      <section class="setup-card compact-card">
+        <div class="setup-heading">
+          <span class="heading-icon" aria-hidden="true">▥</span>
+          <div>
+            <h2>INFO PEMAIN</h2>
+            <p>Statistik Status ditampilkan.</p>
+          </div>
+        </div>
+
+        <button class="choice-card single-choice is-selected" type="button" aria-pressed="true">
+          <span class="check-badge">✓</span>
+          <span class="choice-orb">OVR</span>
+          <strong>DENGAN STATISTIK</strong>
+          <small>Statisik pemain terlihat jelas.</small>
+        </button>
+      </section>
+
+      <section class="setup-card formation-setup">
+        <div class="setup-heading">
+          <span class="heading-icon" aria-hidden="true">◎</span>
+          <div>
+            <h2>FORMASI TIM</h2>
+            <p>Pilih formasi utama.</p>
+          </div>
+        </div>
+
+        <div id="formationChoices" class="formation-choice-grid" role="listbox" aria-label="Pilih formasi">
+          <button class="formation-card is-selected" data-formation="4-3-3" type="button">
+            <span class="formation-orb"></span>
+            <strong>4-3-3</strong>
+          </button>
+          <button class="formation-card" data-formation="4-4-2" type="button">
+            <span class="formation-orb"></span>
+            <strong>4-4-2</strong>
+          </button>
+          <button class="formation-card" data-formation="3-5-2" type="button">
+            <span class="formation-orb"></span>
+            <strong>3-5-2</strong>
+          </button>
+          <button class="formation-card" data-formation="4-2-4" type="button">
+            <span class="formation-orb"></span>
+            <strong>4-2-4</strong>
+          </button>
+        </div>
+      </section>
+
+      <button id="btnNextSetup" class="cta-button main-cta" type="button">BERIKUTNYA <span>›</span></button>
+    </section>
+
+    <section id="screenDraft" class="screen screen-draft" aria-labelledby="draftTitle">
+      <div class="draft-topbar">
+        <strong id="draftTitle">Putaran <span id="roundText">1/11</span></strong>
+      </div>
+
+      <div class="draft-meta">CLASSIC · <span id="draftFormationText">4-3-3</span></div>
+
+      <div class="draft-layout">
+        <section class="left-column">
+          <div class="spin-row" aria-live="polite">
+            <article id="teamSpinBox" class="spin-box yellow">
+              <small>TIM</small>
+              <strong id="teamCodeText">?</strong>
+              <span id="teamNameText">Tim</span>
+            </article>
+
+            <article id="yearSpinBox" class="spin-box purple">
+              <small>TAHUN</small>
+              <strong id="yearText">?</strong>
+              <span>Tahun</span>
+            </article>
+          </div>
+
+          <button id="btnSpinTeam" class="spin-button" type="button">
+            <span class="dice-icon">🎲</span>
+            <span class="spin-label">PUTAR</span>
+          </button>
+
+          <div id="respinActions" class="respin-actions is-hidden">
+            <button id="btnRespinAll" type="button">↻ PUTAR SEMUA</button>
+            <button id="btnRespinTeam" type="button">↻ PUTAR TAHUN</button>
+          </div>
+
+          <div id="teamInfo" class="team-info is-hidden">
+            <span id="teamFlagBadge">WC</span>
+            <div>
+              <strong id="teamFullName">Tim belum dipilih</strong>
+              <p id="teamSquadYear">Putar dulu untuk membuka daftar pemain.</p>
+            </div>
+          </div>
+
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="Cari pemain..." />
+          </label>
+
+          <p id="pickHint" class="pick-hint">Pilih pemain dulu, lalu pilih slot role yang kosong.</p>
+          <p class="pick-hint mini">Slot kosong: <strong id="emptySlotsText">11</strong></p>
+
+          <div id="playerList" class="player-list">
+            <div class="empty-panel">Tekan <strong>PUTAR</strong> untuk membuka pilihan tim dan tahun.</div>
+          </div>
+
+          <div id="slotPicker" class="slot-picker is-hidden" role="dialog" aria-live="polite" aria-labelledby="slotPickerTitle">
+            <div class="slot-picker-head">
+              <div>
+                <small>PILIH ROLE SLOT</small>
+                <strong id="slotPickerTitle">Pilih slot pemain</strong>
+                <p id="slotPickerMeta">Slot yang cocok akan muncul di sini.</p>
+              </div>
+              <button id="btnCancelSlotPicker" type="button" aria-label="Batalkan pilihan slot">×</button>
+            </div>
+            <div id="slotPickerGrid" class="slot-picker-grid"></div>
+          </div>
+        </section>
+
+        <section class="pitch-column" aria-label="Pitch formasi">
+          <div class="pitch-card-head">
+            <div>
+              <small>TIM AKTIF</small>
+              <strong id="pitchStatusText">Belum ada slot dipilih</strong>
+            </div>
+            <span id="pitchCounter">0/11</span>
+          </div>
+          <div id="pitchBoard" class="pitch-board"></div>
+        </section>
+      </div>
+
+      <button id="btnSimulate" class="cta-button sticky-sim is-hidden" type="button">SIMULASI TURNAMEN</button>
+    </section>
+
+    <section id="screenResult" class="screen screen-result" aria-labelledby="resultTitle">
+      <header class="result-header">
+        <p>HASIL KAMPANYE</p>
+        <h1 id="resultTitle">Hasil Turnamen</h1>
+      </header>
+
+      <section class="result-grid">
+        <article><span>RATING TIM</span><strong id="resultRating">-</strong></article>
+        <article><span>FORMASI</span><strong id="resultFormation">-</strong></article>
+        <article><span>GOL CETAK</span><strong id="resultScored">-</strong></article>
+        <article><span>GOL KEBOBOLAN</span><strong id="resultConceded">-</strong></article>
+        <article><span>ATTACK AVG</span><strong id="resultAttack">-</strong></article>
+        <article><span>DEFENSE AVG</span><strong id="resultDefense">-</strong></article>
+      </section>
+
+      <div class="result-actions result-actions-single">
+        <button id="btnPlayAgain" class="outline-button half" type="button">↻ MAIN LAGI</button>
+      </div>
+
+      <section class="run-card">
+        <h2>PERJALANAN TURNAMEN</h2>
+        <div id="runList" class="run-list"></div>
+      </section>
+
+      <section class="award-grid">
+        <article>
+          <span>★</span>
+          <small>PEMAIN TERBAIK</small>
+          <strong id="awardTopPlayer">-</strong>
+        </article>
+        <article>
+          <span>●</span>
+          <small>TOP SCORER</small>
+          <strong id="awardTopScorer">-</strong>
+        </article>
+        <article>
+          <span>⌁</span>
+          <small>RATING TERBAIK</small>
+          <strong id="awardBestRating">-</strong>
+        </article>
+      </section>
+
+      <section class="squad-list-result">
+        <h2>TIM · AVG OVR</h2>
+        <div id="resultSquadList" class="result-squad-grid"></div>
+      </section>
+
+      <button id="btnHome" class="home-button" type="button">⌂ HOME</button>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

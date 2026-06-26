@@ -1,0 +1,17 @@
+{
+  "name": "football-draft-world-champions",
+  "version": "4.0.0",
+  "description": "Ultra-light frontend football draft game with Node.js server-side partial rendering.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "football",
+    "draft",
+    "simulator",
+    "world-cup"
+  ],
+  "license": "MIT"
+}
