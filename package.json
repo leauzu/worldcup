@@ -1,0 +1,15 @@
+{
+  "name": "football-draft-world-champions-railway",
+  "version": "5.0.0",
+  "description": "Railway-ready backend-heavy football draft game. Game logic and player database stay server-side; frontend is ultra-light.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.x"
+  },
+  "private": true
+}
