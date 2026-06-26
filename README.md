@@ -1,62 +1,71 @@
-# World Champions Draft - Ultra-Light SSR
+# World Champions Draft — Railway Backend-Heavy Version
 
-Versi ini dibuat untuk HP low-end: frontend dibuat sangat ringan, sedangkan proses berat dipindahkan ke backend Node.js.
+Versi ini dibuat supaya frontend tetap ultra-light untuk HP low-end.
 
-## Arsitektur
+## Inti arsitektur
 
-- Backend: Node.js native `http` server.
-- Frontend: Vanilla JS kecil di `public/app.js`.
-- Rendering berat: server-side HTML partial rendering dari `server.js`.
-- CSS/design: `public/style.css` tidak diubah dari ZIP sumber.
+- `public/app.js` hanya menangani klik, fetch request, patch HTML, dan animasi ringan.
+- Semua logic game berada di backend `server.js`.
+- Database pemain berada di `data/players.json`, bukan di folder `public`.
+- Folder `data/` dan `server.js` tidak diserve ke browser.
+- CSS dan desain tidak diubah.
 
-## Yang dipindahkan ke server
-
-- Render daftar pemain.
-- Render pitch slot.
-- Render role slot picker.
-- Filter/search pemain.
-- Validasi role compatibility.
-- Validasi slot kosong/penuh.
-- State draft aktif.
-- Simulasi turnamen.
-- Render hasil campaign.
-
-Frontend sekarang hanya menangani klik, request ke server, dan menempel HTML fragment ke DOM.
-
-## Cara menjalankan local
-
-Pastikan Node.js sudah terinstall.
+## Jalankan lokal
 
 ```bash
-cd football-draft-world-champions
-node server.js
+npm start
 ```
 
-Buka browser:
+Buka:
 
 ```text
 http://localhost:3000
 ```
 
-Atau di Windows bisa klik dua kali:
+Atau Windows:
 
 ```text
 start-windows.bat
 ```
 
-Jika port 3000 bentrok:
+## Deploy ke Railway
 
-```bash
-set PORT=3001
-node server.js
-```
+1. Buat repo GitHub private.
+2. Upload semua file di folder ini ke root repo, jadi `package.json` harus sejajar dengan `server.js`.
+3. Railway → New Project → Deploy from GitHub Repo.
+4. Pilih repo.
+5. Railway otomatis memakai `railway.json` dan menjalankan `npm start`.
+6. Setelah deploy selesai: Settings → Networking → Generate Domain.
 
-Lalu buka:
+Struktur repo yang benar:
 
 ```text
-http://localhost:3001
+repo-root/
+  package.json
+  railway.json
+  server.js
+  data/
+    players.json
+  public/
+    app.js
+    index.html
+    style.css
+    assets/
 ```
 
-## Catatan deploy
+Jangan upload dengan struktur seperti ini:
 
-Versi ini butuh backend Node.js. Cocok untuk VPS, Railway, Render, Fly.io, atau cPanel yang support Node.js App. Untuk Vercel serverless perlu refactor session ke Redis/KV.
+```text
+repo-root/
+  football-draft-world-champions/
+    package.json
+    server.js
+```
+
+Kalau tetap pakai folder dalam repo, set Railway Root Directory ke folder tersebut.
+
+## Catatan penting tentang hidden logic
+
+Logic game tidak terlihat dari browser karena tidak ada formula, data penuh, atau simulasi di folder `public`.
+
+Kalau repo GitHub dibuat public, source backend tetap bisa dilihat dari GitHub. Jadi gunakan GitHub private agar logic tidak terlihat publik.

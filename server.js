@@ -1123,29 +1123,36 @@ async function handleApi(req, res) {
 }
 
 function serveStatic(req, res) {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Method not allowed');
+    return;
+  }
+
   let filePath = req.url.split('?')[0];
   if (filePath === '/') filePath = '/index.html';
 
-  const safePath = path.normalize(filePath).replace(/^\.\.(\/|\\|$)/, '');
+  // Only files inside /public are ever served. Backend logic and data stay private.
+  let decodedPath;
+  try { decodedPath = decodeURIComponent(filePath); }
+  catch { decodedPath = '/index.html'; }
+
+  const safePath = path.normalize(decodedPath).replace(/^\.\.(\/|\\|$)/, '');
   const absolute = path.join(PUBLIC_DIR, safePath);
 
   if (!absolute.startsWith(PUBLIC_DIR)) {
-    res.writeHead(403);
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Forbidden');
     return;
   }
 
   fs.readFile(absolute, (err, data) => {
     if (err) {
-      fs.readFile(path.join(PUBLIC_DIR, 'index.html'), (fallbackErr, fallback) => {
-        if (fallbackErr) {
-          res.writeHead(404);
-          res.end('Not found');
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-        res.end(fallback);
+      res.writeHead(404, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'X-Content-Type-Options': 'nosniff'
       });
+      res.end('Not found');
       return;
     }
 
@@ -1158,9 +1165,21 @@ function serveStatic(req, res) {
       '.png': 'image/png',
       '.jpg': 'image/jpeg',
       '.jpeg': 'image/jpeg',
+      '.webp': 'image/webp',
       '.svg': 'image/svg+xml'
     };
-    res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream' });
+
+    res.writeHead(200, {
+      'Content-Type': types[ext] || 'application/octet-stream',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'same-origin'
+    });
+
+    if (req.method === 'HEAD') {
+      res.end();
+      return;
+    }
+
     res.end(data);
   });
 }

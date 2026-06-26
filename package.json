@@ -1,17 +1,15 @@
 {
-  "name": "football-draft-world-champions",
-  "version": "4.0.0",
-  "description": "Ultra-light frontend football draft game with Node.js server-side partial rendering.",
+  "name": "football-draft-world-champions-railway",
+  "version": "5.0.0",
+  "description": "Railway-ready backend-heavy football draft game. Game logic and player database stay server-side; frontend is ultra-light.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
   },
-  "keywords": [
-    "football",
-    "draft",
-    "simulator",
-    "world-cup"
-  ],
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.x"
+  },
+  "private": true
 }
